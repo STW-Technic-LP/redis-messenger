@@ -1,0 +1,215 @@
+Worker registering:  4jcmslaqcr57y14i
+Received job request:  1
+Assigning job 1 to worker 4jcmslaqcr57y14i
+Worker 4jcmslaqcr57y14i accepted job: 1
+Received job request:  2
+Received job request:  3
+Received job request:  4
+Received job request:  5
+avg job time is now :  5012
+Worker 4jcmslaqcr57y14i completed job 1
+Assigning job 2 to worker 4jcmslaqcr57y14i
+Worker 4jcmslaqcr57y14i accepted job: 2
+Received job request:  6
+Received job request:  7
+Received job request:  8
+Received job request:  9
+Received job request:  10
+avg job time is now :  7009
+Worker 4jcmslaqcr57y14i completed job 2
+Assigning job 3 to worker 4jcmslaqcr57y14i
+Worker 4jcmslaqcr57y14i accepted job: 3
+Received job request:  11
+Received job request:  12
+Received job request:  13
+Received job request:  14
+Received job request:  15
+avg job time is now :  9008.333333333334
+Worker 4jcmslaqcr57y14i completed job 3
+Assigning job 4 to worker 4jcmslaqcr57y14i
+Worker 4jcmslaqcr57y14i accepted job: 4
+Received job request:  16
+Received job request:  17
+Received job request:  18
+Received job request:  19
+Received job request:  20
+avg job time is now :  11008
+Worker 4jcmslaqcr57y14i completed job 4
+Assigning job 5 to worker 4jcmslaqcr57y14i
+Worker 4jcmslaqcr57y14i accepted job: 5
+Received job request:  21
+Received job request:  22
+Received job request:  23
+Received job request:  24
+Received job request:  25
+avg job time is now :  13007.4
+Worker 4jcmslaqcr57y14i completed job 5
+Assigning job 6 to worker 4jcmslaqcr57y14i
+Worker 4jcmslaqcr57y14i accepted job: 6
+Received job request:  26
+Received job request:  27
+Received job request:  28
+Received job request:  29
+Received job request:  30
+avg job time is now :  15006.666666666666
+Worker 4jcmslaqcr57y14i completed job 6
+Assigning job 7 to worker 4jcmslaqcr57y14i
+Worker 4jcmslaqcr57y14i accepted job: 7
+Received job request:  31
+Received job request:  32
+Received job request:  33
+Received job request:  34
+Received job request:  35
+avg job time is now :  17006.571428571428
+Worker 4jcmslaqcr57y14i completed job 7
+Assigning job 8 to worker 4jcmslaqcr57y14i
+Worker 4jcmslaqcr57y14i accepted job: 8
+Received job request:  36
+Received job request:  37
+Received job request:  38
+Received job request:  39
+Received job request:  40
+avg job time is now :  19006.625
+Worker 4jcmslaqcr57y14i completed job 8
+Assigning job 9 to worker 4jcmslaqcr57y14i
+Worker 4jcmslaqcr57y14i accepted job: 9
+Received job request:  41
+Received job request:  42
+Received job request:  43
+Received job request:  44
+Received job request:  45
+avg job time is now :  21006.555555555555
+Worker 4jcmslaqcr57y14i completed job 9
+Assigning job 10 to worker 4jcmslaqcr57y14i
+Worker 4jcmslaqcr57y14i accepted job: 10
+Worker registering:  r7obec998736jemi
+Assigning job 11 to worker r7obec998736jemi
+Worker r7obec998736jemi accepted job: 11
+Received job request:  46
+Received job request:  47
+Received job request:  48
+Received job request:  49
+Received job request:  50
+avg job time is now :  15350.7
+Worker 4jcmslaqcr57y14i completed job 10
+Assigning job 12 to worker 4jcmslaqcr57y14i
+Worker 4jcmslaqcr57y14i accepted job: 12
+avg job time is now :  17601.272727272728
+Worker r7obec998736jemi completed job 11
+Assigning job 13 to worker r7obec998736jemi
+Worker r7obec998736jemi accepted job: 13
+Received job request:  51
+Received job request:  52
+Received job request:  53
+Received job request:  54
+Received job request:  55
+avg job time is now :  19801.583333333332
+Worker 4jcmslaqcr57y14i completed job 12
+Assigning job 14 to worker 4jcmslaqcr57y14i
+Worker 4jcmslaqcr57y14i accepted job: 14
+avg job time is now :  21593.76923076923
+Worker r7obec998736jemi completed job 13
+Assigning job 15 to worker r7obec998736jemi
+Worker r7obec998736jemi accepted job: 15
+Received job request:  56
+Worker registering:  y14ubvkupdbr19k9
+Assigning job 16 to worker y14ubvkupdbr19k9
+Received job request:  57
+Received job request:  58
+Received job request:  59
+Received job request:  60
+avg job time is now :  14964.285714285714
+Worker 4jcmslaqcr57y14i completed job 14
+Assigning job 17 to worker 4jcmslaqcr57y14i
+Worker 4jcmslaqcr57y14i accepted job: 17
+avg job time is now :  17040
+Worker r7obec998736jemi completed job 15
+Assigning job 18 to worker r7obec998736jemi
+Worker r7obec998736jemi accepted job: 18
+Received job request:  61
+Received job request:  62
+Received job request:  63
+Received job request:  64
+Received job request:  65
+avg job time is now :  19037.0625
+Worker 4jcmslaqcr57y14i completed job 17
+Assigning job 19 to worker 4jcmslaqcr57y14i
+Worker 4jcmslaqcr57y14i accepted job: 19
+avg job time is now :  20746.29411764706
+Worker r7obec998736jemi completed job 18
+Assigning job 20 to worker r7obec998736jemi
+Worker r7obec998736jemi accepted job: 20
+Received job request:  66
+Worker registering:  gqhai46i3zt1emi
+Assigning job 21 to worker gqhai46i3zt1emi
+Received job request:  67
+Received job request:  68
+Received job request:  69
+Received job request:  70
+avg job time is now :  14693.777777777777
+Worker 4jcmslaqcr57y14i completed job 19
+Assigning job 22 to worker 4jcmslaqcr57y14i
+Worker 4jcmslaqcr57y14i accepted job: 22
+avg job time is now :  16609.684210526317
+Worker r7obec998736jemi completed job 20
+Assigning job 23 to worker r7obec998736jemi
+Worker r7obec998736jemi accepted job: 23
+Received job request:  71
+Received job request:  72
+Received job request:  73
+Received job request:  74
+Received job request:  75
+avg job time is now :  18478.5
+Worker 4jcmslaqcr57y14i completed job 22
+Assigning job 24 to worker 4jcmslaqcr57y14i
+Worker 4jcmslaqcr57y14i accepted job: 24
+avg job time is now :  20126.52380952381
+Worker r7obec998736jemi completed job 23
+Assigning job 25 to worker r7obec998736jemi
+Worker r7obec998736jemi accepted job: 25
+Worker registering:  ktdnrhx2w4revcxr
+Assigning job 26 to worker ktdnrhx2w4revcxr
+Received job request:  76
+Received job request:  77
+Received job request:  78
+Received job request:  79
+Received job request:  80
+avg job time is now :  14521.863636363636
+Worker 4jcmslaqcr57y14i completed job 24
+Assigning job 27 to worker 4jcmslaqcr57y14i
+Worker 4jcmslaqcr57y14i accepted job: 27
+avg job time is now :  16329.08695652174
+Worker r7obec998736jemi completed job 25
+Assigning job 28 to worker r7obec998736jemi
+Worker r7obec998736jemi accepted job: 28
+Received job request:  81
+Received job request:  82
+Received job request:  83
+Received job request:  84
+Received job request:  85
+avg job time is now :  18105.916666666668
+Worker 4jcmslaqcr57y14i completed job 27
+Assigning job 29 to worker 4jcmslaqcr57y14i
+Worker 4jcmslaqcr57y14i accepted job: 29
+avg job time is now :  19704.72
+Worker r7obec998736jemi completed job 28
+Assigning job 30 to worker r7obec998736jemi
+Worker r7obec998736jemi accepted job: 30
+Received job request:  86
+Received job request:  87
+Received job request:  88
+Received job request:  89
+Received job request:  90
+avg job time is now :  21330.46153846154
+Worker 4jcmslaqcr57y14i completed job 29
+Assigning job 31 to worker 4jcmslaqcr57y14i
+Worker 4jcmslaqcr57y14i accepted job: 31
+avg job time is now :  14299.074074074075
+Worker r7obec998736jemi completed job 30
+Assigning job 32 to worker r7obec998736jemi
+Worker r7obec998736jemi accepted job: 32
+Worker registering:  03jfa113bthjjor
+Assigning job 33 to worker 03jfa113bthjjor
+Received job request:  91
+Received job request:  92
+Received job request:  93

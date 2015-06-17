@@ -1,5 +1,5 @@
 # redis-messenger
-This library uses Redis' pubsub to provide communication amongst applications
+This library uses Redis' pubsub to provide communication for node apps
 
 
 ## License
