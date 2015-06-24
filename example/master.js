@@ -3,6 +3,7 @@
 
    var workers = {};
    var jobs = {};
+   var apps = {};
    var jobId = 1;
    var workerTimeout = 60000;
    var averageJobTime = 0;
@@ -10,7 +11,15 @@
 
    var _ = require('lodash');
    var messenger = require('../messenger')('master');
-   var spawner = require("child_process").spawn;
+   var forker = require("child_process").fork;
+   var client = require('redis').createClient();
+
+   /**********************
+   *    WORKER EVENTS    *
+   **********************/
+
+   // make the first worker...
+   makeWorker();
 
    // new worker is registering...
    messenger.on('workerRegister', function(data){
@@ -30,15 +39,14 @@
       }
    });
 
-   // received new job request
-   messenger.on('jobRequest', function(data){
-      data.jobId = jobId;
-      data.status = 'queued';
-      data.startTime = Date.now();
-      jobs[jobId] = data;
-      console.log("Received job request: ", jobId);
-      assignJob(jobs[jobId]);
-      jobId++;
+   // worker has received a job successfully
+   messenger.on('workerAck', function(data, fromWorker){
+      if(!jobs[data.jobId]){
+         console.log(new Error("Got workerAck but job not found..."));
+         return;
+      }
+      console.log("Worker "+fromWorker+" accepted job: "+data.jobId);
+      workers[fromWorker].status = 'busy';
    });
 
    // worker has completed a job
@@ -59,15 +67,40 @@
       }
    });
 
-   // worker has received a job successfully
-   messenger.on('workerAck', function(data, fromWorker){
-      if(!jobs[data.jobId]){
-         console.log(new Error("Got workerAck but job not found..."));
-         return;
-      }
-      console.log("Worker "+fromWorker+" accepted job: "+data.jobId);
-      workers[fromWorker].status = 'busy';
+   /**********************
+   *    DEVICE EVENTS    *
+   **********************/
+
+   messenger.on('appRegister', function(data){
+      console.log('new app registering (job creator): ', data.name);
+
    });
+
+   // received new job request
+   messenger.on('jobRequest', function(data, fromDevice){
+      data.jobId = jobId;
+      data.status = 'queued';
+      data.startTime = Date.now();
+      data.from = fromDevice;
+      jobs[jobId] = data;
+      console.log("Received job request: ", jobId);
+      assignJob(jobs[jobId]);
+      jobId++;
+   });
+
+   messenger.on('dataRequest', function(rqst){
+      // forward data request to respective device applicationonsole.
+      console.log("worker requested data from device");
+      messenger.send("dataRequest", jobs[rqst.jobId].from, rqst);
+   });
+
+   messenger.on('dataResponse', function(data){
+      var wId = getWorkerIdByJobId(data.jobId);
+      console.log("got requested data from device, sending to worker ", wId);
+      messenger.send("dataResponse", wId, data);
+   });
+
+   //messenger.on('sudoku', cleanUpWorker);
 
    // misc
    function getIdle(){
@@ -91,6 +124,7 @@
          messenger.send('job', worker.name, job);
          jobs[job.jobId].status = 'assigned';
          workers[worker.name].jobId = job.jobId;
+         workers[worker.name].jobStart = Date.now();
       }
    }
 
@@ -100,29 +134,42 @@
             setTimeout(areYouAlive.bind(null, workerId), workerTimeout);
             return;
          }
-         console.log("Worker "+workerId+" has died. Cleaning up");
-         // free up the job if the worker was working on one
-         if(workers[workerId].jobId){
-            jobs[workers[data.name].jobId].status = 'queued';
-         }
-         delete workers[workerId];
-
+         cleanUpWorker(undefined, workerId);
       });
    }
 
    function updateAverageJobTime(job){
       var diff = Date.now() - job.startTime;
+      // make it a moving average
       var numCompleted = completedJobs > 100 ? 100 : completedJobs;
       averageJobTime = ((averageJobTime * (numCompleted-1))+diff)/numCompleted;
       console.log("avg job time is now : ", averageJobTime);
       if(averageJobTime > 20000){
-         averageJobTime = 12500;
+         // reset average job time
+
+         averageJobTime = (averageJobTime*Object.keys(workers).length)/(Object.keys(workers).length + 1);
          // spawn new worker
-         spawner('node', ['worker.js']);
+         makeWorker();
       }
-      else if(averageJobTime < 5000){
-         // kill a worker
-         /******************* WORK ON KILLING THE SPAWNED NODE APPS */
+      // ...decided not to kill any workers for now
+   }
+
+   function getWorkerIdByJobId(jobId){
+      return Object.keys(workers).filter(function(e){
+         return workers[e].jobId === jobId;
+      })[0];
+   }
+
+   function cleanUpWorker(data, workerId){
+      console.log("Worker "+workerId+" has died. Cleaning up");
+      // free up the job if the worker was working on one
+      if(workers[workerId].jobId){
+         jobs[workers[workerId].jobId].status = 'queued';
       }
+      delete workers[workerId];
+   }
+
+   function makeWorker(){
+      forker('./worker.js', {env: {"WORKER_NAME": "worker"+Object.keys(workers).length}});
    }
 })();

@@ -26,6 +26,7 @@ listener.on('message', function(channel, message){
    messenger.emit(msg.eventName, msg.content, msg.from);
 });
 
+// checks if a channel is still open
 messenger.checkState = function(id, callback){
    getChannels(function(channels){
       if(channels.indexOf(id) === -1){
@@ -36,20 +37,31 @@ messenger.checkState = function(id, callback){
    });
 };
 
+messenger.join = function(channel){
+   listener.subscribe(channel);
+};
+
+messenger.leave = function(channel){
+   listener.unsubscribe(channel);
+};
+
 module.exports = function(me){
    if(!me){
       me = makeId();
    }
    getChannels(function(channels){
       if(channels.indexOf(me) !== -1){
-         console.log("Warning: a channel with name \""+me+"\" already Exists... Assigning another channel");
-         me = makeId();
-         if(channels.indexOf(me) !== -1){
+         var newMe = makeId();
+         console.log("Warning: a channel with name \""+me+"\" already Exists... Created new channel: ", newMe);
+         if(channels.indexOf(newMe) !== -1){
             throw new Error("Could not randomize unique channel name");
          }
+         me = newMe;
       }
       listener.subscribe(me);
    });
+
+   // FIXME: bug. it will return "me" even if a "newMe" has been created
    messenger.me = me;
    return messenger;
 };
