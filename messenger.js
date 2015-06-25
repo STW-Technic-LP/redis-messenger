@@ -4,14 +4,15 @@ var sender = redis.createClient();
 
 var evts = require('events');
 var messenger = new evts.EventEmitter();
-var myName;
+//var myName;
 
 messenger.send = function(eventName, to, content){
    sender.publish(to, JSON.stringify({
       to: to,
       content: content,
       eventName: eventName,
-      from: myName
+      // from: myName,
+      from: messenger.me
    }));
 };
 
@@ -45,6 +46,11 @@ messenger.leave = function(channel){
    listener.unsubscribe(channel);
 };
 
+
+//messenger.whoAmI = function(){
+//   return myName;
+//}
+
 module.exports = function(me){
    if(!me){
       me = makeId();
@@ -58,11 +64,12 @@ module.exports = function(me){
          }
          me = newMe;
       }
-      myName = me;
+//      myName = me;
       listener.subscribe(me);
    });
 
    // FIXME: bug. myName doesnt exist until getChannels (async) is complete.
+   messenger.me = me;
    return messenger;
 };
 
@@ -71,9 +78,6 @@ process.on('SIGINT', function(){
    process.exit();
 });
 
-function whoAmI(){
-   return myName;
-}
 
 // misc functions
 

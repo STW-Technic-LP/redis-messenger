@@ -46,6 +46,7 @@
          return;
       }
       console.log("Worker "+fromWorker+" accepted job: "+data.jobId);
+      console.log(workers);
       workers[fromWorker].status = 'busy';
    });
 

@@ -14,7 +14,7 @@
 
 
    messenger.send('workerRegister', master, {
-      name: messenger.whoAmI()
+      name: messenger.me
    });
 
    messenger.on('job', function(data){
