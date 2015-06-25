@@ -11,10 +11,10 @@
       return Math.floor(Math.random()*10000)+1;
    }
    var messenger = require('../messenger')(me);
-   
+
 
    messenger.send('workerRegister', master, {
-      name: messenger.me
+      name: messenger.whoAmI()
    });
 
    messenger.on('job', function(data){

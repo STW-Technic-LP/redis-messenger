@@ -4,14 +4,14 @@ var sender = redis.createClient();
 
 var evts = require('events');
 var messenger = new evts.EventEmitter();
-var messageList = {};
+var myName;
 
 messenger.send = function(eventName, to, content){
    sender.publish(to, JSON.stringify({
       to: to,
       content: content,
       eventName: eventName,
-      from: messenger.me
+      from: myName
    }));
 };
 
@@ -51,18 +51,18 @@ module.exports = function(me){
    }
    getChannels(function(channels){
       if(channels.indexOf(me) !== -1){
-         var newMe = makeId();
+         var newMe = !!me ? ""+me+makeId() : makeId();
          console.log("Warning: a channel with name \""+me+"\" already Exists... Created new channel: ", newMe);
          if(channels.indexOf(newMe) !== -1){
             throw new Error("Could not randomize unique channel name");
          }
          me = newMe;
       }
+      myName = me;
       listener.subscribe(me);
    });
 
-   // FIXME: bug. it will return "me" even if a "newMe" has been created
-   messenger.me = me;
+   // FIXME: bug. myName doesnt exist until getChannels (async) is complete.
    return messenger;
 };
 
@@ -70,6 +70,10 @@ process.on('SIGINT', function(){
    listener.unsubscribe(messenger.me);
    process.exit();
 });
+
+function whoAmI(){
+   return myName;
+}
 
 // misc functions
 
