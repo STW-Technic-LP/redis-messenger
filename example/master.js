@@ -4,14 +4,16 @@
    var workers = {};
    var jobs = {};
    var apps = {};
+   var workerProcs = [];
    var jobId = 1;
    var workerTimeout = 60000;
    var averageJobTime = 0;
    var completedJobs = 0;
 
    var _ = require('lodash');
-   var messenger = require('../messenger')('master');
-   var forker = require("child_process").fork;
+   var messenger = require('../messenger').create();
+   messenger.register('master');
+   var childs = require("child_process");
    var client = require('redis').createClient();
 
    /**********************
@@ -22,16 +24,18 @@
    makeWorker();
 
    // new worker is registering...
-   messenger.on('workerRegister', function(data){
-      console.log("Worker registering: ", data.name);
-      if(!data.name || !_.isString(data.name)){
+   messenger.on('workerRegister', function(data, fromWorker){
+      console.log("Worker registering: ", fromWorker);
+      if(!fromWorker || !_.isString(fromWorker)){
+         console.error("Worker attempted to register, but had invalid name.");
          return;
       }
-      workers[data.name] = data;
-      workers[data.name].status = 'idle';
-      workers[data.name].jobId = -1;
+      workers[fromWorker] = {};
+      workers[fromWorker].status = 'idle';
+      workers[fromWorker].name = fromWorker; // a bit redundant
+      workers[fromWorker].jobId = -1;
 
-      setTimeout(areYouAlive.bind(null, data.name), workerTimeout);
+      setTimeout(areYouAlive.bind(null, fromWorker), workerTimeout);
 
       var job = getFirstQueued();
       if(job){
@@ -72,8 +76,8 @@
    *    DEVICE EVENTS    *
    **********************/
 
-   messenger.on('appRegister', function(data){
-      console.log('new app registering (job creator): ', data.name);
+   messenger.on('appRegister', function(data, fromApp){
+      console.log('new app registering (job creator): ', fromApp);
 
    });
 
@@ -92,13 +96,13 @@
    messenger.on('dataRequest', function(rqst){
       // forward data request to respective device applicationonsole.
       console.log("worker requested data from device");
-      messenger.send("dataRequest", jobs[rqst.jobId].from, rqst);
+      messenger.send(jobs[rsqt.jobId].from, "dataRequest", rqst);
    });
 
    messenger.on('dataResponse', function(data){
       var wId = getWorkerIdByJobId(data.jobId);
       console.log("got requested data from device, sending to worker ", wId);
-      messenger.send("dataResponse", wId, data);
+      messenger.send(wId, "dataResponse", data);
    });
 
    //messenger.on('sudoku', cleanUpWorker);
@@ -122,7 +126,7 @@
       var worker = getIdle();
       if(worker){
          console.log("Assigning job "+job.jobId+" to worker "+worker.name);
-         messenger.send('job', worker.name, job);
+         messenger.send(worker.name, 'job', job);
          jobs[job.jobId].status = 'assigned';
          workers[worker.name].jobId = job.jobId;
          workers[worker.name].jobStart = Date.now();
@@ -171,6 +175,15 @@
    }
 
    function makeWorker(){
-      forker('./worker.js', {env: {"WORKER_NAME": "worker"+Object.keys(workers).length}});
+      var newWorker = childs.fork('worker.js', {env: {"WORKER_NAME": "worker"+Object.keys(workers).length}});
+      workerProcs.push(newWorker);
    }
+
+   process.on('exit', function(){
+      workerProcs.forEach(function(e){
+         e.kill('SIGHUP');
+      });
+      process.exit();
+   });
+
 })();

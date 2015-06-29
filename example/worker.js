@@ -10,12 +10,10 @@
    function timeToComplete(){
       return Math.floor(Math.random()*10000)+1;
    }
-   var messenger = require('../messenger')(me);
+   var messenger = require('../messenger').create();
+   messenger.register(me);
 
-
-   messenger.send('workerRegister', master, {
-      name: messenger.me
-   });
+   messenger.send(master, 'workerRegister');
 
    messenger.on('job', function(data){
       //if(timeoutId) {
@@ -24,11 +22,11 @@
 
       console.log("Got job: ", data.jobId);
       curJob = data.jobId;
-      messenger.send('workerAck', master, {
+      messenger.send(master, 'workerAck', {
          jobId: data.jobId
       });
 
-      messenger.send('dataRequest', master, {
+      messenger.send(master, 'dataRequest', {
          jobId: curJob
       });
 
@@ -40,10 +38,9 @@
 
    function finishJob(id){
       console.log("Finished job: ", id);
-      messenger.send("workerDone", master, {
+      messenger.send(master, "workerDone", {
          jobId: id
       });
-
 
       /* Removed this... no need to kill a worker...yet
       // haven't received a job in a while, I'm not needed
@@ -53,5 +50,13 @@
       }, jobAssignTimeout);
       */
    }
+
+   process.on('SIGHUP', function(){
+      console.log('got sighup');
+   });
+
+   process.on('SIGINT', function(){
+      console.log('got sighup');
+   });
 
 })();
