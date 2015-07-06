@@ -35,7 +35,7 @@ listener.on('message', function(channel, message){
       console.error(e);
       return console.error("Message Contents:", message);
    }
-   messenger.emit(msg.eventName, msg.content, msg.from);
+   messenger.emit(msg.eventName, msg.content, msg.from, channel);
 });
 
 // checks if a channel is still open
@@ -49,6 +49,7 @@ messenger.isAlive = function(id, callback){
    });
 };
 
+// idea: create/return a new client for join?
 messenger.join = function(channel){
    listener.subscribe(channel);
 };

@@ -12,7 +12,7 @@
 
    var _ = require('lodash');
    var messenger = require('../messenger').create();
-   messenger.register('master');
+   messenger.register('vdsr_device');
    var childs = require("child_process");
    var client = require('redis').createClient();
 

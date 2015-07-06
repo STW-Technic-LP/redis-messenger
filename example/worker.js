@@ -16,6 +16,7 @@
    messenger.send(master, 'workerRegister');
 
    messenger.on('job', function(data){
+      console.log('i am: ', messenger.whoAmI());
       //if(timeoutId) {
       //   clearTimeout(timeoutId);
       //}
