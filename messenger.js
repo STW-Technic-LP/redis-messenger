@@ -79,6 +79,11 @@ messenger.register = function(me){
    });
 };
 
+// using this function will prevent messenger from receiving events on its channel
+messenger.unregister = function(){
+   listener.unsubscribe(myName);
+};
+
 messenger.whoAmI = function(){
    return myName;
 };
@@ -88,35 +93,6 @@ module.exports = {
       return messenger;
    }
 };
-
-process.on('SIGINT', function(){
-   console.log("got SIGINT from: ", myName);
-   if(myName){
-      console.log("unsubscribing from:", myName);
-      listener.unsubscribe(myName);
-   }
-   process.exit();
-});
-
-process.on('SIGTERM', function(){
-   console.log("got SIGTERM");
-   if(myName){
-      console.log("unsubscribing from:", myName);
-      listener.unsubscribe(myName);
-   }
-   process.exit();
-});
-
-process.on('SIGHUP', function(){
-   console.log("got SIGHUP");
-   if(myName){
-      console.log("unsubscribing from:", myName);
-      listener.unsubscribe(myName);
-   }
-   process.exit();
-});
-
-
 
 // misc functions
 
