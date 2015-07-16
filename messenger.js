@@ -1,11 +1,11 @@
 var redis = require('redis');
-var listener = redis.createClient();
-var sender = redis.createClient();
-
+var listener;
+var sender;
 var evts = require('events');
 var messenger = new evts.EventEmitter();
 var myName;
 var sendQueue = [];
+var registering = false;
 
 messenger.send = function(to, eventName, content){
    if(!myName){
@@ -16,7 +16,8 @@ messenger.send = function(to, eventName, content){
             eventName: eventName
          }
       });
-      var emsg = "Cannot send without registering yourself. This will send automatically when registered!";
+      var emsg = registering ? 'In the process of registering.' : "Cannot send without registering.";
+      emsg += " Messages will automatically be sent when registered.";
       console.error(emsg);
       return new Error(emsg);
    }
@@ -27,16 +28,6 @@ messenger.send = function(to, eventName, content){
    }));
 };
 
-listener.on('message', function(channel, message){
-   var msg;
-   try {
-      msg = JSON.parse(message);
-   } catch(e){
-      console.error(e);
-      return console.error("Message Contents:", message);
-   }
-   messenger.emit(msg.eventName, msg.content, msg.from, channel);
-});
 
 // checks if a channel is still open
 messenger.isAlive = function(id, callback){
@@ -58,8 +49,8 @@ messenger.leave = function(channel){
    listener.unsubscribe(channel);
 };
 
-messenger.register = function(me){
-   console.log('registering as: ', me);
+messenger.register = function(me, cb){
+   registering = true;
    if(!me){
       me = makeId();
       console.log("No name given, generating random name: ", me);
@@ -75,7 +66,11 @@ messenger.register = function(me){
       }
       myName = me;
       listener.subscribe(me);
+      console.log('Registered as '+myName);
       flushSendQueue();
+      if(cb){
+         cb(myName);
+      }
    });
 };
 
@@ -89,7 +84,21 @@ messenger.whoAmI = function(){
 };
 
 module.exports = {
-   create: function(){
+   create: function(port, host, options){
+      listener = redis.createClient(port, host, options);
+      sender = redis.createClient(port, host, options);
+
+      listener.on('message', function(channel, message){
+         var msg;
+         try {
+            msg = JSON.parse(message);
+         } catch(e){
+            console.error(e);
+            return console.error("Message Contents:", message);
+         }
+         messenger.emit(msg.eventName, msg.content, msg.from, channel);
+      });
+
       return messenger;
    }
 };
@@ -99,6 +108,7 @@ module.exports = {
 function flushSendQueue(){
    sendQueue.forEach(function(msg){
       msg.data.from = myName;
+      console.log('flushing: ', msg);
       sender.publish(msg.to, JSON.stringify(msg.data));
    });
    sendQueue = [];
