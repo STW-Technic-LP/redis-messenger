@@ -1,5 +1,5 @@
 # redis-messenger
-This library uses Redis pub/sub to provide communication for node apps
+This is a simple library that uses Redis pub/sub to provide intercommunication for node apps.  It doesn't setup any sort of master/slave relationship model.  
 
 ## Install
 
@@ -7,8 +7,16 @@ npm install redis-messenger
 
 ## Api
 
-### create()
-Create a new redis messenger object.
+### create([port, host, options])
+Create a new redis messenger object.  The defaults are
+
+```json
+{
+  "port":6379,
+  "host":"127.0.0.1",
+  "options":{}
+}
+```
 
 ```javascript
 var messenger = require('redis-messenger').create()
