@@ -85,8 +85,8 @@ messenger.whoAmI = function(){
 
 module.exports = {
    create: function(port, host, options){
-      listener = redis.createClient(port, host, options);
-      sender = redis.createClient(port, host, options);
+      listener = redis.createClient(port||6379, host||'127.0.0.1', options||{});
+      sender = redis.createClient(port||6379, host||'127.0.0.1', options||{});
 
       listener.on('message', function(channel, message){
          var msg;
