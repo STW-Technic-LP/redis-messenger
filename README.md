@@ -9,7 +9,7 @@ npm install redis-messenger
 
 ## Api
 
-### create([port, host, options])
+### create([port [, host [, options]]])
 Create a new redis messenger object.  The defaults are
 
 ```json
@@ -40,7 +40,7 @@ Currently, an application can `join` a channel that another app has registered t
 Q: Why not register using the create command?  
 A: Registering is an asynchronous function which require() cannot do.
 
-### send(to, eventName, content)
+### send(to, eventName [, content])
 Send a message to a channel.  All applications that have joined the channel can receive the event.
 
 ```javascript
@@ -81,7 +81,7 @@ Leaves the channel that the application was registered to.
 messenger.unregister('someChannel');
 ```
 
-Warning: This removes the unique channel joining feature.
+Warning: This removes the unique channel joining feature.  This is available to provide more flexibility in the use of redis-messenger.
 
 ## Handle Messages
 The messenger is simply an [EventEmitter](https://nodejs.org/api/events.html#events_class_events_eventemitter), so all events are handled accordingly.
