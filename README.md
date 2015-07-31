@@ -1,5 +1,7 @@
 # redis-messenger
-This is a simple library that uses Redis pub/sub to provide intercommunication for node apps.  It doesn't setup any sort of master/slave relationship model.  
+This is a message library that uses Redis pub/sub to provide intercommunication for node apps.  It doesn't setup any sort of master/slave relationship model, but just sends and receives messages.
+
+As per redis pub/sub functionality, messages are not stored in memory.  If a message was sent to a channel that has no one listening, the message won't be queued, it will just be lost.
 
 ## Install
 
@@ -18,12 +20,14 @@ Create a new redis messenger object.  The defaults are
 }
 ```
 
+The properties of the options object can be found on [node redis repo](https://github.com/NodeRedis/node_redis#rediscreateclient)
+
 ```javascript
 var messenger = require('redis-messenger').create()
 ```
 
 ### register(appName [, callback])
-Registering sets your messenger up with a pseudo-unique channel name that it can receive messages on.  To retrieve your name, see the whoAmI command.
+Registering sets your messenger up with a unique channel name that it can receive messages on.  When you `send` messages, the "sender" will be the name you registered, so that if the receiver would like to respond directly, it can do so by `send`ing to that channel.  To retrieve your name, see the `whoAmI` command
 
 ```javascript
 messenger.register('myAppName');
@@ -31,10 +35,13 @@ messenger.register('myAppName');
 
 The callback receives 1 parameter that is the resulting application name that was used for registration.  It may not be what you registered as, since that channel may be taken by another application already.
 
-Why not register using the create command?  Registering is an asynchronous function which require() cannot do.
+Currently, an application can `join` a channel that another app has registered to. It was left this way to provide more flexibility for those edge cases.
+
+Q: Why not register using the create command?  
+A: Registering is an asynchronous function which require() cannot do.
 
 ### send(to, eventName, content)
-Send a message to a channel
+Send a message to a channel.  All applications that have joined the channel can receive the event.
 
 ```javascript
 messenger.send('someApp', 'moshimoshi', { foo: 'bar' });
@@ -45,18 +52,20 @@ The send command will wait until your application has successfully registered wi
 Note: It is possible to send to channels that have no listeners.  The message will just be thrown away as this is how Redis pub/sub  works.
 
 ### isAlive(id, callback)
-Checks if a channel is open or not.  The callback receives a single boolean parameter
+Checks if a channel has been joined by anyone or not.  The callback receives a single boolean parameter.  It is true if the channel has been joined to, false otherwise.
 
 ```javascript
 messenger.isAlive('someChannel', function(aliveness){ ... });
 ```
 
 ### join(channel)
-Joins a channel to listen to events
+Joins a channel to listen to events.
 
 ```javascript
 messenger.join('someChannel');
 ```
+
+An app can join a channel that has been registered to.
 
 ### leave(channel)
 Leaves a channel that was subscribed to
