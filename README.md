@@ -7,7 +7,7 @@ As per redis pub/sub functionality, messages are not stored in memory.  If a mes
 
 npm install redis-messenger
 
-## Api
+## API
 
 ### create([port [, host [, options]]])
 Create a new redis messenger object.  The defaults are
@@ -78,7 +78,7 @@ messenger.leave('someChannel');
 Leaves the channel that the application was registered to.
 
 ```javascript
-messenger.unregister('someChannel');
+messenger.unregister();
 ```
 
 Warning: This removes the unique channel joining feature.  This is available to provide more flexibility in the use of redis-messenger.
