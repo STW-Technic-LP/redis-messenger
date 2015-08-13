@@ -3,6 +3,8 @@ This is a message library that uses Redis pub/sub to provide intercommunication 
 
 As per redis pub/sub functionality, messages are not stored in memory.  If a message was sent to a channel that has no one listening, the message won't be queued, it will just be lost.
 
+This package has but one dependency, and that is the lovely [node_redis](https://github.com/NodeRedis/node_redis).
+
 ## Install
 
 npm install redis-messenger
