@@ -7,7 +7,7 @@ This package has one dependency, the lovely [node_redis](https://github.com/Node
 
 ## Install
 
-npm install redis-messenger
+`npm install redis-messenger`
 
 ## Example
 
