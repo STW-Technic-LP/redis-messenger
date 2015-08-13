@@ -9,6 +9,39 @@ This package has one dependency, the lovely [node_redis](https://github.com/Node
 
 npm install redis-messenger
 
+## Example
+
+#### fooApp.js
+
+```javascript
+var messenger = require('redis-messenger').create();
+// register to a specific channel
+messenger.register('fooApp');
+
+messenger.on('ping', function(data, sender){
+   console.log(sender, ': ping');
+   console.log('fooApp : pong');
+   messenger.send(sender, 'pong');
+});
+```
+
+#### barApp.js
+
+```javascript
+var messenger = require('redis-messenger').create();
+// register to a specific channel
+messenger.register('barApp');
+
+messenger.on('pong', function(data, sender){
+   console.log(sender, ': pong');
+});
+
+setInterval(function(){
+   console.log("barApp : ping");
+   messenger.send('fooApp', 'ping');
+}, 5000);
+```
+
 ## API
 
 ### create([port [, host [, options]]])
@@ -94,39 +127,6 @@ For each message, the callback receives the content, sender address, and channel
 messenger.on('someEventName', function(data, sender, channel){
   console.log(sender+"sent a message over channel "+channel+":", data);
 });
-```
-
-## Example
-
-#### fooApp.js
-
-```javascript
-var messenger = require('redis-messenger').create();
-// register to a specific channel
-messenger.register('fooApp');
-
-messenger.on('ping', function(data, sender){
-   console.log(sender, ': ping');
-   console.log('fooApp : pong');
-   messenger.send(sender, 'pong');
-});
-```
-
-#### barApp.js
-
-```javascript
-var messenger = require('redis-messenger').create();
-// register to a specific channel
-messenger.register('barApp');
-
-messenger.on('pong', function(data, sender){
-   console.log(sender, ': pong');
-});
-
-setInterval(function(){
-   console.log("barApp : ping");
-   messenger.send('fooApp', 'ping');
-}, 5000);
 ```
 
 ## License
