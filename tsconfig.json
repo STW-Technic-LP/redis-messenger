@@ -1,13 +1,15 @@
 {
    "compilerOptions": {
-       "noEmit": true,
+       "declaration": true,
+       "emitDeclarationOnly": true,
+       "outFile": "index.d.ts",
        "allowJs": true,
        "maxNodeModuleJsDepth": 1,
        "moduleResolution": "node",
        "checkJs": true,
        "strict": true,
        "lib": ["es2018"],
-       "target": "es2018",
+       "target": "ES2016",
        "types": ["node"]
    },
    "include": [
