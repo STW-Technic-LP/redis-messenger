@@ -1,5 +1,4 @@
-import redis = require("redis");
-declare class Messenger extends EventEmitter {
+export class Messenger extends EventEmitter {
     /**
      *
      * @param {import("redis").RedisClient} sender
@@ -89,5 +88,3 @@ declare class Messenger extends EventEmitter {
     getChannels(callback: (channels: string[]) => void): void;
 }
 import { EventEmitter } from "events";
-export function create(port: number, host: string, options?: redis.ClientOpts | undefined): Messenger;
-export {};

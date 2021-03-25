@@ -13,7 +13,8 @@
        "types": ["node"]
    },
    "include": [
-       "messenger.js",
+       "index.js",
+       "Messenger.js"
    ],
    "exclude": [
        "node_modules",
