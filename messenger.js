@@ -1,5 +1,5 @@
 const redis = require('redis');
-const events = require('events');
+const {EventEmitter} = require('events');
 
 module.exports = {
    /**
@@ -29,7 +29,7 @@ module.exports = {
    }
 };
 
-class Messenger extends events.EventEmitter {
+class Messenger extends EventEmitter {
    /**
     * 
     * @param {import("redis").RedisClient} sender 
