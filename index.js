@@ -2,6 +2,7 @@ const redis = require('redis');
 const { Messenger } = require("./Messenger");
 
 module.exports = {
+   Messenger,
    /**
     * Creates and returns a messenger instance 
     * @param {number} port - defaults to 6379

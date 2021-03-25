@@ -1,8 +1,6 @@
 {
    "compilerOptions": {
-       "declaration": true,
-       "emitDeclarationOnly": true,
-       "outFile": "types/all.d.ts",
+       "noEmit": true,
        "allowJs": true,
        "maxNodeModuleJsDepth": 1,
        "moduleResolution": "node",
