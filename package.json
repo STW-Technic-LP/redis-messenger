@@ -1,6 +1,6 @@
 {
   "name": "redis-messenger",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "This library uses Redis' pubsub to provide communication amongst applications",
   "main": "index.js",
   "scripts": {
@@ -26,5 +26,6 @@
   "devDependencies": {
     "@types/node": "^10.17.55",
     "@types/redis": "^2.8.28"
-  }
+  },
+  "types": "types/all.d.ts"
 }
