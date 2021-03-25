@@ -88,4 +88,4 @@ declare class Messenger extends EventEmitter {
      */
     getChannels(callback: (channels: string[]) => void): void;
 }
-import { EventEmitter } from "node/events";
+import { EventEmitter } from "events";

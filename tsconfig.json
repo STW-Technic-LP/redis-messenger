@@ -2,7 +2,7 @@
    "compilerOptions": {
       "declaration": true,
       "emitDeclarationOnly": true,
-      "outDir": "types",
+      "outDir": "@types",
       "allowJs": true,
       "maxNodeModuleJsDepth": 1,
       "moduleResolution": "node",
