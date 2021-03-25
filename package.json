@@ -1,6 +1,6 @@
 {
   "name": "redis-messenger",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "This library uses Redis' pubsub to provide communication amongst applications",
   "main": "messenger.js",
   "scripts": {
@@ -21,6 +21,10 @@
   },
   "homepage": "https://github.com/bberry6/redis-messenger",
   "dependencies": {
-    "redis": "^0.12.1"
+    "redis": "^3.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^10.17.55",
+    "@types/redis": "^2.8.28"
   }
 }
