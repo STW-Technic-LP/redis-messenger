@@ -25,7 +25,6 @@ module.exports = {
          }
          messenger.emit(msg.eventName, msg.content, msg.from, channel);
       });
-      
       return messenger;
    }
 };
@@ -65,7 +64,31 @@ class Messenger extends events.EventEmitter {
        * @private
        */
       this.registering = false;
+
+      /**
+       * @private
+       */
+      this.broadcastRoom = "";
    }
+
+   /**
+    * @param {string} val
+    */
+   setBroadcastRoom(val) {
+      this.broadcastRoom = val;
+   }
+
+   /**
+    * 
+    * @param {string} eventName 
+    * @param {any} eventData 
+    */
+   broadcast(eventName, eventData){
+      if (!this.broadcastRoom) {
+         throw new Error("You must set the broadcast room first by calling .setBroadcastRoom")
+      }
+      this.send(this.broadcastRoom, eventName, eventData);
+   };
 
    /**
     * 
