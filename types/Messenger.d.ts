@@ -1,4 +1,5 @@
-export class Messenger extends EventEmitter {
+export = Messenger;
+declare class Messenger extends EventEmitter {
     /**
      *
      * @param {import("redis").RedisClient} sender
@@ -87,4 +88,4 @@ export class Messenger extends EventEmitter {
      */
     getChannels(callback: (channels: string[]) => void): void;
 }
-import { EventEmitter } from "events";
+import { EventEmitter } from "node/events";
