@@ -125,27 +125,24 @@ class Messenger extends EventEmitter {
 
    /**
     *
-    * @param {string} me - my instance id; auto generated if not given
-    * @param {(myInstanceId: string) => void} cb
+    * @param {string} [idPrefix] - a string to prefix to unique instance/channel id;
+    * @param {(myInstanceId: string) => void} [cb] - callback fn to receive the instance id; also returned by .whoAmI()
     */
-   register(me, cb) {
+   register(idPrefix, cb) {
       this.registering = true;
-      if (!me) {
-         me = makeId();
-         console.log("No name given, generating random name: ", me);
-      }
+      let myUniqueId = makeId(idPrefix);
       this.getChannels((channels) => {
-         if (channels.indexOf(me) !== -1) {
-            var newMe = !!me ? "" + me + makeId() : makeId();
-            console.log("Warning: a channel with name \"" + me + "\" already Exists... Created new channel: ", newMe);
+         if (channels.indexOf(myUniqueId) !== -1) {
+            var newMe = makeId(idPrefix); // !!me ? "" + me + makeId() : makeId();
+            //console.log("Warning: a channel with name \"" + me + "\" already Exists... Created new channel: ", newMe);
             if (channels.indexOf(newMe) !== -1) {
                throw new Error("Could not randomize unique channel name");
             }
-            me = newMe;
+            myUniqueId = newMe;
          }
-         this.myId = me;
-         this.listener.subscribe(me);
-         console.log('Registered as ' + this.myId);
+         this.myId = myUniqueId;
+         this.listener.subscribe(myUniqueId);
+         //console.log('Registered as ' + this.myId);
          this.flushSendQueue();
          if (cb) {
             cb(this.myId);
@@ -191,8 +188,14 @@ class Messenger extends EventEmitter {
    }
 };
 
-function makeId() {
-   return new Date().getTime().toString(36) + Math.random().toString(36).substring(2);
+/**
+ * 
+ * @param {string} [prefix] 
+ * @returns 
+ */
+function makeId(prefix) {
+   return (typeof prefix === "string" ? prefix : "") 
+      +  new Date().getTime().toString(36) + Math.random().toString(36).substring(2);
 }
 
 module.exports = Messenger;
