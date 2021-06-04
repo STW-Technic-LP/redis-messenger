@@ -1,5 +1,5 @@
 const redis = require('redis');
-const Messenger = require("./messenger");
+const Messenger = require("./Messenger");
 
 module.exports = {
    /**
