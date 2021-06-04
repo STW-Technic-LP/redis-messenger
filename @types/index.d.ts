@@ -1,2 +1,3 @@
 import redis = require("redis");
-export function create(port: number, host: string, options?: redis.ClientOpts | undefined): any;
+import Messenger = require("./messenger");
+export function create(port: number, host: string, options?: redis.ClientOpts | undefined): Messenger;

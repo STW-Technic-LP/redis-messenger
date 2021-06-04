@@ -68,10 +68,10 @@ declare class Messenger extends EventEmitter {
     leave(channel: string): void;
     /**
      *
-     * @param {string} me - my instance id; auto generated if not given
-     * @param {(myInstanceId: string) => void} cb
+     * @param {string} [idPrefix] - a string to prefix to unique instance/channel id;
+     * @param {(myInstanceId: string) => void} [cb] - callback fn to receive the instance id; also returned by .whoAmI()
      */
-    register(me: string, cb: (myInstanceId: string) => void): void;
+    register(idPrefix?: string | undefined, cb?: ((myInstanceId: string) => void) | undefined): void;
     unregister(): void;
     /**
      *
@@ -88,4 +88,4 @@ declare class Messenger extends EventEmitter {
      */
     getChannels(callback: (channels: string[]) => void): void;
 }
-import { EventEmitter } from "events";
+import { EventEmitter } from "node/events";

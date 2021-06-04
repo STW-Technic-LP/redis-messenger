@@ -9,6 +9,6 @@
       "checkJs": true,
       "strict": true,
    },
-   "include": ["index.js", "Messenger.js"],
+   "include": ["*.js"],
    "exclude": ["node_modules", "examples"]
 }
